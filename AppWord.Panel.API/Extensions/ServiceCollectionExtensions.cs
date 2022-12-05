@@ -27,6 +27,7 @@ namespace AppWord.Panel.API.Extensions
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ITokenHelper, JwtHelper>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IWordService, WordService>();
             #endregion
 
             #region AutoMapper

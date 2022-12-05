@@ -35,7 +35,7 @@ namespace AppWord.Core.Services
             if (!verify)
                 return (null, "loginInfoErrorMessage");
 
-            var token = _tokenHelper.CreateToken(RoleEnum.User, user.Id);
+            var token = _tokenHelper.CreateToken(user.Role, user.Id);
             return (token, null);
         }
 
