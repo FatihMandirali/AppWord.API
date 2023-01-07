@@ -13,6 +13,9 @@ namespace AppWord.Data.Entity
         public string UserName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public int TotalTrueCount { get; set; }
+        public int TotalFalseCount { get; set; }
+        public int TotalPoint { get; set; }
 
     }
 }

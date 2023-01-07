@@ -126,7 +126,16 @@
   <data name="loginInfoErrorMessage" xml:space="preserve">
     <value>UserName or Password is wrong</value>
   </data>
+  <data name="quizMinCount" xml:space="preserve">
+    <value>You has'nt got word count for quiz</value>
+  </data>
   <data name="registerExistErrorMessage" xml:space="preserve">
     <value>Email or Username already exists</value>
+  </data>
+  <data name="suggestWordAlreadyExist" xml:space="preserve">
+    <value>Suggested word already exists</value>
+  </data>
+  <data name="wordAlreadyExist" xml:space="preserve">
+    <value>Word already exists</value>
   </data>
 </root>

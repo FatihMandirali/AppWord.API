@@ -25,7 +25,7 @@ namespace AppWord.API.Controllers
         }
 
         [HttpPost("Update")]
-        public async Task<FMBaseResponse<object>> PostForgetPassword([FromBody] UserUpdateRequest userUpdateRequest)
+        public async Task<FMBaseResponse<object>> Update([FromBody] UserUpdateRequest userUpdateRequest)
         {
             var userId = CurrentUserId;
             var response = await _userService.UpdateUser(userUpdateRequest, userId);

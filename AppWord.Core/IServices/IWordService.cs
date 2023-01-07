@@ -20,5 +20,9 @@ namespace AppWord.Core.IServices
         Task<string> Update(WordRequest wordRequest, int id);
         Task<string> Delete(int id);
         Task<List<string>> ListAll();
+        Task<List<WordResponse>> WordOfDay();
+        Task<string> SuggestWord(SuggestWordRequest suggestWordRequest, int id);
+        Task<string> PrivateWord(SuggestWordRequest suggestWordRequest, int id);
+        Task<PaginatedList<WordResponse>> PrivateWordList(WordListRequest wordListRequest, int userId);
     }
 }

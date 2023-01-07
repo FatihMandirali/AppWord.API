@@ -126,7 +126,16 @@
   <data name="loginInfoErrorMessage" xml:space="preserve">
     <value>Kullanıcı adı veya şifre yanlış</value>
   </data>
+  <data name="quizMinCount" xml:space="preserve">
+    <value>Quiz yapmak için yeteri kadar kelimeniz yok</value>
+  </data>
   <data name="registerExistErrorMessage" xml:space="preserve">
     <value>Email veya Kullanıcı adı zaten bulunmaktadır</value>
+  </data>
+  <data name="suggestWordAlreadyExist" xml:space="preserve">
+    <value>Önerdiğiniz kelime zaten bulunmaktadır</value>
+  </data>
+  <data name="wordAlreadyExist" xml:space="preserve">
+    <value>Eklemek istediğiniz kelime zaten bulunmaktadır</value>
   </data>
 </root>

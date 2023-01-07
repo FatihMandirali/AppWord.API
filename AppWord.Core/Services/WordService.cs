@@ -5,6 +5,7 @@ using AppWord.Data.Repository;
 using AppWord.Model.Models.BaseModel;
 using AppWord.Model.Models.Request;
 using AppWord.Model.Models.Response;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,10 @@ namespace AppWord.Core.Services
 {
     public class WordService : Repository<Word>, IWordService
     {
-        public WordService(AppWordDbContext context) : base(context)
+        private readonly IMapper _mapper;
+        public WordService(AppWordDbContext context, IMapper mapper) : base(context)
         {
+            _mapper = mapper;
         }
 
         public async Task CreateWordList(List<WordRequest> wordRequests, int adminId)
@@ -57,7 +60,7 @@ namespace AppWord.Core.Services
 
         public async Task<PaginatedList<WordResponse>> List(WordListRequest wordListRequest)
         {
-            var query = FindBy(x => !x.IsDeleted && x.IsDeleted == false && x.IsActive == wordListRequest.IsActive);
+            var query = FindBy(x => !x.IsDeleted && x.IsActive == wordListRequest.IsActive);
             query = query.Include(x => x.User);
             var data = await PaginatedList<WordResponse>.CreateAsync(query.Select(x => new WordResponse
             {
@@ -109,6 +112,57 @@ namespace AppWord.Core.Services
             word.IsDeleted = true;
             await UpdateAsync(word, id);
             return null;
+        }
+        public async Task<List<WordResponse>> WordOfDay()
+        {
+            var today = DateTime.Today;
+            var response = await FindBy(x => x.IsActive && x.WordOfDayDate == today).Include(x=>x.User).ToListAsync();
+            var mapResponse = _mapper.Map<List<WordResponse>>(response);
+
+            return mapResponse;
+        }
+
+        public async Task<string> SuggestWord(SuggestWordRequest suggestWordRequest, int id)
+        {
+            var wordControl = await FindAsync(x => x.WordEn.ToLower() == suggestWordRequest.WordEn && x.WordStatusEnum == Data.EntityEnum.WordStatusEnum.IsPublic);
+            if (wordControl is not null)
+                return "suggestWordAlreadyExist";
+            var word = new Word();
+            word.WordTr = suggestWordRequest.WordTr;
+            word.WordEn = suggestWordRequest.WordEn;
+            word.UserId = id;
+            word.WordStatusEnum = Data.EntityEnum.WordStatusEnum.IsWaiting;
+            await AddAsync(word);
+            return null;
+        }
+
+        public async Task<string> PrivateWord(SuggestWordRequest suggestWordRequest, int id)
+        {
+            var wordControl = await FindAsync(x => x.WordEn.ToLower() == suggestWordRequest.WordEn && x.UserId == id && x.WordStatusEnum == Data.EntityEnum.WordStatusEnum.IsPrivate);
+            if (wordControl is not null)
+                return "wordAlreadyExist";
+            var word = new Word();
+            word.WordTr = suggestWordRequest.WordTr;
+            word.WordEn = suggestWordRequest.WordEn;
+            word.UserId = id;
+            word.WordStatusEnum = Data.EntityEnum.WordStatusEnum.IsWaiting;
+            await AddAsync(word);
+            return null;
+        }
+
+        public async Task<PaginatedList<WordResponse>> PrivateWordList(WordListRequest wordListRequest, int userId)
+        {
+            var query = FindBy(x => x.IsActive && x.UserId == userId && x.WordStatusEnum == Data.EntityEnum.WordStatusEnum.IsPrivate);
+            var data = await PaginatedList<WordResponse>.CreateAsync(query.Select(x => new WordResponse
+            {
+                Id = x.Id,
+                CreateDate = x.CreateDate,
+                IsActive = x.IsActive,
+                WordEn = x.WordEn,
+                WordTr = x.WordTr,
+            }), wordListRequest.Page, wordListRequest.Limit);
+
+            return data;
         }
     }
 }

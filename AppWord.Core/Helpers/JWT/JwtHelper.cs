@@ -23,12 +23,12 @@ namespace AppWord.Core.Helpers.JWT
             _tokenoptions = Configuration.GetSection("Jwt").Get<TokenOptions>();
 
         }
-        public AccessToken CreateToken(RoleEnum rolesEnum, int id)
+        public AccessToken CreateToken(RoleEnum rolesEnum, int id, string username, string email)
         {
             _accessTokenExp = DateTime.Now.AddMinutes(_tokenoptions.AccessTokenExpretion);
             var securityKey = SecurityKeyHelper.CreateSecurityKey(_tokenoptions.Key);
             var signingCredentials = SigningCreditianalsHelper.CreateSigningCreditianals(securityKey);
-            var jwt = CreateJwtSecurityWebToken(_tokenoptions, signingCredentials, rolesEnum, id);
+            var jwt = CreateJwtSecurityWebToken(_tokenoptions, signingCredentials, rolesEnum, id, username, email);
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var token = jwtSecurityTokenHandler.WriteToken(jwt);
             return new AccessToken
@@ -38,7 +38,7 @@ namespace AppWord.Core.Helpers.JWT
             };
 
         }
-        private JwtSecurityToken CreateJwtSecurityWebToken(TokenOptions tokenOptions, SigningCredentials signingCredentials, RoleEnum rolesEnum, int id)
+        private JwtSecurityToken CreateJwtSecurityWebToken(TokenOptions tokenOptions, SigningCredentials signingCredentials, RoleEnum rolesEnum, int id, string username, string email)
         {
             var jwt = new JwtSecurityToken
             (
@@ -46,16 +46,18 @@ namespace AppWord.Core.Helpers.JWT
                 audience: tokenOptions.Audience,
                 expires: _accessTokenExp,
                 notBefore: DateTime.Now,
-                claims: SetClaims(rolesEnum, id),
+                claims: SetClaims(rolesEnum, id, username,email),
                 signingCredentials: signingCredentials
                 );
             return jwt;
         }
-        private IEnumerable<Claim> SetClaims(RoleEnum rolesEnum, int id)
+        private IEnumerable<Claim> SetClaims(RoleEnum rolesEnum, int id, string username, string email)
         {
             var claims = new List<Claim>();
             claims.Add(new Claim("AccountRole", rolesEnum.ToString()));
             claims.Add(new Claim("Id", id.ToString()));
+            claims.Add(new Claim("UserName", username));
+            claims.Add(new Claim("Email", email));
             claims.Add(new Claim(ClaimTypes.Role, rolesEnum.ToString()));
             return claims;
         }

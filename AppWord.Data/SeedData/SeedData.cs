@@ -47,6 +47,67 @@ namespace AppWord.Data.SeedData
             await dbContext.Users.AddAsync(user1);
             await dbContext.SaveChangesAsync();
 
+            var user2 = new User
+            {
+                CreateDate = DateTime.Now,
+                Email = "fatih.mandirali4@hotmail.com",
+                IsActive = true,
+                IsDeleted = false,
+                ModifiedDate = DateTime.Now,
+                Password = BC.HashPassword("123456"),
+                UserName = "fm2",
+                Role= EntityEnum.RoleEnum.User
+            };
+            await dbContext.Users.AddAsync(user2);
+            await dbContext.SaveChangesAsync();
+
+            var announcement = new Announcement
+            {
+                CreateDate = DateTime.Now,
+                IsActive = true,
+                IsDeleted = false,
+                ModifiedDate = DateTime.Now,
+                Description = "genel",
+                Title="genel",
+                AnnouncementType=EntityEnum.AnnouncementEnum.IsPublic,
+                StartDate= DateTime.Now,
+                EndDate= DateTime.Now.AddDays(1),
+                
+            };
+            await dbContext.Announcements.AddAsync(announcement);
+            await dbContext.SaveChangesAsync();
+
+            var announcement1 = new Announcement
+            {
+                CreateDate = DateTime.Now,
+                IsActive = true,
+                IsDeleted = false,
+                ModifiedDate = DateTime.Now,
+                Description = "özel",
+                Title="özel",
+                AnnouncementType=EntityEnum.AnnouncementEnum.IsPublic,
+                UserId=user2.Id,
+                User=user2,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(1),
+            };
+            await dbContext.Announcements.AddAsync(announcement1);
+            await dbContext.SaveChangesAsync();
+
+            var announcement2 = new Announcement
+            {
+                CreateDate = DateTime.Now,
+                IsActive = true,
+                IsDeleted = false,
+                ModifiedDate = DateTime.Now,
+                Description = "subscribe",
+                Title= "subscribe",
+                AnnouncementType=EntityEnum.AnnouncementEnum.IsSubscriber,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(1),
+            };
+            await dbContext.Announcements.AddAsync(announcement2);
+            await dbContext.SaveChangesAsync();
 
             var onboarding = new Onboarding
             {

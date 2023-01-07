@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppWord.Data.EntityEnum
+namespace AppWord.Model.Models.Request
 {
-    public enum RoleEnum
+    public class UnknownWordAddRequest
     {
-        User = 0,
-        Admin = 1,
-        Subscriber = 2,
+        public List<int> WordIdList { get; set; }
     }
 }

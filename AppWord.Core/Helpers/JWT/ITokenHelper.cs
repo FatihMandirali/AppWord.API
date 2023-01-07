@@ -9,6 +9,6 @@ namespace AppWord.Core.Helpers.JWT
 {
     public interface ITokenHelper
     {
-        AccessToken CreateToken(RoleEnum rolesEnum, int id);
+        AccessToken CreateToken(RoleEnum rolesEnum, int id, string username, string email);
     }
 }

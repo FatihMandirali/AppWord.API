@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace AppWord.Data.EntityEnum
 {
-    public enum WordStatusEnum
+    public enum AnnouncementEnum
     {
-        IsPrivate = 0,
-        IsWaiting = 1,
-        IsPublic = 2,
-        IsRefused = 3
+        IsPublic = 0,
+        IsPrivate=1,
+        IsSubscriber=2,
+        IsNotSubscriber=3,
     }
 }

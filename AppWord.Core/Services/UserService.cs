@@ -37,7 +37,7 @@ namespace AppWord.Core.Services
             user.Password = BC.HashPassword(userUpdateRequest.Password);
             await UpdateAsync(user,id);
 
-            var token = _tokenHelper.CreateToken(RoleEnum.User, user.Id);
+            var token = _tokenHelper.CreateToken(RoleEnum.User, user.Id, user.UserName, user.Email);
 
             return (token, null);
         }

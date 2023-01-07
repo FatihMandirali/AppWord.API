@@ -7,6 +7,8 @@ using AppWord.Model.Models.Options;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using FM.Project.BaseLibrary.BaseGenericException;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,12 +24,31 @@ namespace AppWord.API.Extensions
     {
         public static IServiceCollection ServiceCollectionExtension(this IServiceCollection services, IConfiguration configuration)
         {
-            
+            #region Options
+            var jerseySavePath = configuration
+                .GetSection("QuizSettings")
+                .Get<QuizSettings>();
+            services.AddSingleton(jerseySavePath);
+            #endregion
             #region Services
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ITokenHelper, JwtHelper>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IWordService, WordService>();
+            services.AddScoped<IHangfireService, HangfireService>();
+            services.AddScoped<IAnnouncementService, AnnouncementService>();
+            services.AddScoped<IOnboardingService, OnboardingService>();
+            services.AddScoped<IQuizService, QuizService>();
+            services.AddScoped<IUserUnknownWordService, UserUnknownWordService>();
+            #endregion
+
+            #region Hangfire
+            services.AddHangfire(x =>
+            x.UseSimpleAssemblyNameTypeSerializer()
+            .UseRecommendedSerializerSettings()
+            .UsePostgreSqlStorage(configuration.GetConnectionString("SqlConnection")));
+            services.AddHangfireServer();
+
             #endregion
 
             #region AutoMapper

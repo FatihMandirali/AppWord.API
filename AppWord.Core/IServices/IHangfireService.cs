@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppWord.Data.EntityEnum
+namespace AppWord.Core.IServices
 {
-    public enum RoleEnum
+    public interface IHangfireService
     {
-        User = 0,
-        Admin = 1,
-        Subscriber = 2,
+        Task WordOfDayUpdate();
     }
 }

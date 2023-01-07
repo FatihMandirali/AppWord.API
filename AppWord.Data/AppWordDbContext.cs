@@ -19,6 +19,8 @@ namespace AppWord.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Onboarding> Onboardings { get; set; }
         public DbSet<Word> Words { get; set; }
+        public DbSet<Announcement> Announcements { get; set; }
+        public DbSet<UserUnknownWord> UserUnknownWords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
