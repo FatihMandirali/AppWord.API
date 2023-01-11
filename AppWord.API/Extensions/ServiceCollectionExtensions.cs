@@ -40,6 +40,7 @@ namespace AppWord.API.Extensions
             services.AddScoped<IOnboardingService, OnboardingService>();
             services.AddScoped<IQuizService, QuizService>();
             services.AddScoped<IUserUnknownWordService, UserUnknownWordService>();
+            services.AddScoped<ICheckUpdateService, CheckUpdateService>();
             #endregion
 
             #region Hangfire
