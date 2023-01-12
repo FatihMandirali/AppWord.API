@@ -10,6 +10,6 @@ namespace AppWord.Model.Models.Request
     public class CheckUpdateRequest
     {
         public PlartformEnum Plartform { get; set; }
-        public Version Version { get; set; }
+        public string Version { get; set; }
     }
 }

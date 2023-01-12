@@ -18,19 +18,24 @@ namespace AppWord.API.Controllers
     {
         private readonly IStringLocalizer<Resource> _localizer;
         private readonly ILogger<UserController> _logger;
-        private readonly IOnboardingService _onboardingService;
-        public CheckUpdateController(IStringLocalizer<Resource> localizer, ILogger<UserController> logger, IOnboardingService onboardingService)
+        private readonly ICheckUpdateService _checkUpdateService;
+        public CheckUpdateController(IStringLocalizer<Resource> localizer, ILogger<UserController> logger, ICheckUpdateService checkUpdateService)
         {
             _localizer = localizer;
             _logger = logger;
-            _onboardingService = onboardingService;
+            _checkUpdateService = checkUpdateService;
         }
 
-        [HttpGet("CheckUpdate")]
-        public async Task<FMBaseResponse<List<OnboardingResponse>>> GetOnboarding([FromQuery]OnboardingEnum onboardingEnum)
+        [HttpPost("CheckUpdate")]
+        public async Task<FMBaseResponse<object>> GetOnboarding([FromBody]CheckUpdateRequest request)
         {
-            var response = await _onboardingService.OnboardingList(onboardingEnum);
-            return new FMBaseResponse<List<OnboardingResponse>>(FMProcessStatusEnum.Success, null, response);
+            var response = await _checkUpdateService.CheckUpdate(request);
+            if(response == "minor_update")
+                return new FMBaseResponse<object>(FMProcessStatusEnum.NotFound, new FMFriendlyMessage { Message = _localizer[response] }, null);
+            if(response=="major_update")
+                return new FMBaseResponse<object>(FMProcessStatusEnum.NotFound, new FMFriendlyMessage { Message = _localizer[response] }, null);
+            
+            return new FMBaseResponse<object>(FMProcessStatusEnum.Success, null, null);
         }
 
     }

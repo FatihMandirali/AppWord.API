@@ -138,4 +138,10 @@
   <data name="wordAlreadyExist" xml:space="preserve">
     <value>Eklemek istediğiniz kelime zaten bulunmaktadır</value>
   </data>
+  <data name="major_update" xml:space="preserve">
+    <value>Önemli güncelleme bulunmaktadır.</value>
+  </data>
+  <data name="mino_update" xml:space="preserve">
+    <value>Güncelleme bulunmaktadır</value>
+  </data>
 </root>

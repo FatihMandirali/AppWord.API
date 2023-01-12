@@ -29,6 +29,10 @@ namespace AppWord.API.Extensions
                 .GetSection("QuizSettings")
                 .Get<QuizSettings>();
             services.AddSingleton(jerseySavePath);
+            var versionSettings = configuration
+                .GetSection("VersionSettings")
+                .Get<VersionSettings>();
+            services.AddSingleton(versionSettings);
             #endregion
             #region Services
             services.AddScoped<IAuthenticationService, AuthenticationService>();

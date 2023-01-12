@@ -138,4 +138,11 @@
   <data name="wordAlreadyExist" xml:space="preserve">
     <value>Word already exists</value>
   </data>
+  <data name="major_update" xml:space="preserve">
+    <value>There is an important update
+</value>
+  </data>
+  <data name="mino_update" xml:space="preserve">
+    <value>There is an update</value>
+  </data>
 </root>
