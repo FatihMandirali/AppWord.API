@@ -32,11 +32,11 @@ var localizationOptions = app.Services.GetService<IOptions<RequestLocalizationOp
 app.UseRequestLocalization(localizationOptions.Value);
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 
 app.UseHangfireDashboard("/hangfire", new DashboardOptions()
@@ -53,8 +53,8 @@ app.UseHangfireServer();
 
 //https://dev.to/moe23/net-6-background-jobs-with-hangfire-4nj7
 //https://www.borakasmer.com/net-6-0-uzerinde-hangfire-implementasyonu/
-GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 3 }); //Tanýmlamasý ile, ilgili method baþarýlý þekilde çalýþtýrýlamaz ise, hata alýnýlmayýncaya kadar 3 defa tekrar edilmektedir.
-RecurringJob.RemoveIfExists("IHangfireService.WordOfDayUpdate"); //Çoklama yapmamasý için ile önce var olaný silip tekrar oluþturuyoruz.
+GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 3 }); //Tanï¿½mlamasï¿½ ile, ilgili method baï¿½arï¿½lï¿½ ï¿½ekilde ï¿½alï¿½ï¿½tï¿½rï¿½lamaz ise, hata alï¿½nï¿½lmayï¿½ncaya kadar 3 defa tekrar edilmektedir.
+RecurringJob.RemoveIfExists("IHangfireService.WordOfDayUpdate"); //ï¿½oklama yapmamasï¿½ iï¿½in ile ï¿½nce var olanï¿½ silip tekrar oluï¿½turuyoruz.
 //RecurringJob.AddOrUpdate<IHangfireService>(x => x.WordOfDayUpdate(), Cron.MinuteInterval(2), TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time"));
 
 app.UseAllElasticApm(builder.Configuration);

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appwordapi
+  namespace: test
+spec:
+  selector:
+   matchLabels:
+    app: appwordapi
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: appwordapi
+    spec:
+      containers:
+        - name: appwordapi
+          image: fthmndrli/appwordapi
+          env:
+           - name: ASPNETCORE_APPREQUIREHOST
+             value: "*:5006"
+           - name: ASPNETCORE_URLS
+             value: "http://*:5006"
+           - name: TZ
+             value: "Turkey"
+           - name: ConnectionStrings__SqlConnection
+             value: "Host=192.168.49.2:30432;Database=mydb;Username=root-fm;Password=root-fm-password"   
+          ports:
+            - containerPort: 5006

@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Globalization;
 using System.Text;
+using StackExchange.Redis;
 
 namespace AppWord.API.Extensions
 {
@@ -24,6 +25,13 @@ namespace AppWord.API.Extensions
     {
         public static IServiceCollection ServiceCollectionExtension(this IServiceCollection services, IConfiguration configuration)
         {
+            #region RedisCache
+            services.AddStackExchangeRedisCache(option =>
+            {
+                option.Configuration = configuration.GetConnectionString("Redis"); //localhost:6379,password=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+            });
+            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")));
+            #endregion
             #region Options
             var jerseySavePath = configuration
                 .GetSection("QuizSettings")
@@ -33,6 +41,10 @@ namespace AppWord.API.Extensions
                 .GetSection("VersionSettings")
                 .Get<VersionSettings>();
             services.AddSingleton(versionSettings);
+            var cacheSettings = configuration
+                .GetSection("CacheSettings")
+                .Get<CacheSettings>();
+            services.AddSingleton(cacheSettings);
             #endregion
             #region Services
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -45,6 +57,7 @@ namespace AppWord.API.Extensions
             services.AddScoped<IQuizService, QuizService>();
             services.AddScoped<IUserUnknownWordService, UserUnknownWordService>();
             services.AddScoped<ICheckUpdateService, CheckUpdateService>();
+            services.AddScoped<IRedisCacheService, RedisCacheService>();
             #endregion
 
             #region Hangfire

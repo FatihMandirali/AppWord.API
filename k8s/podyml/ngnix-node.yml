@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name:  development
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: firstpod
+  namespace: development
+  labels:
+    app: frontend
+  annotations:
+     name: Fatih MANDIRALI
+     job: FULL-STACK DEVELOPER
+spec:
+  containers:
+    - name: nginx-firstpod
+      image: nginx
+      ports:
+        - containerPort: 80

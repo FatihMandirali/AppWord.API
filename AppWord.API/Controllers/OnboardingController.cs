@@ -1,4 +1,5 @@
 ﻿using AppWord.API.Localize;
+using AppWord.Core.Attributes;
 using AppWord.Core.IServices;
 using AppWord.Data.EntityEnum;
 using AppWord.Model.Models.BaseModel;
@@ -26,6 +27,7 @@ namespace AppWord.API.Controllers
             _onboardingService = onboardingService;
         }
 
+        [Cached(isItUserSpesific:false)]
         [HttpGet("GetOnboarding")]
         public async Task<FMBaseResponse<List<OnboardingResponse>>> GetOnboarding([FromQuery]OnboardingEnum onboardingEnum)
         {

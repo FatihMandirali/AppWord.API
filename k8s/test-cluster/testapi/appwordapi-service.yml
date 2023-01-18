@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: appwordapi
+  namespace: test
+  labels:
+    app: appwordapi
+spec:
+  selector:
+   app: appwordapi
+  type: NodePort
+  ports:
+   - port: 5006
+     nodePort: 30015

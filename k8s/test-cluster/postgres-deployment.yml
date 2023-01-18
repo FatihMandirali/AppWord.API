@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: test
+spec:
+  selector:
+   matchLabels:
+    app: postgres
+  replicas: 1
+  template:
+    metadata:
+      namespace: test
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          imagePullPolicy: "IfNotPresent"
+          env:
+           - name: POSTGRES_USER
+             valueFrom:
+               secretKeyRef:
+                 name: postgres-secret
+                 key: postgres-root-username
+           - name: POSTGRES_PASSWORD
+             valueFrom:
+               secretKeyRef:
+                 name: postgres-secret
+                 key: postgres-root-password
+           - name: POSTGRES_DB
+             valueFrom:
+               configMapKeyRef:
+                 name: postgres-configmap
+                 key: postgres-dbname
+      volumes:
+            - name: postgredb
+              persistentVolumeClaim:
+                  claimName: postgres-pv-claim                 
+                 
